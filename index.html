@@ -168,20 +168,6 @@
       <div id="doctorsContainer" class="doctor-container row"></div>
 
       <div id="selectedDoctorContainer"></div>
-
-      <div id="registerFormContainer" class="register-form">
-        <input type="text" id="patientName" placeholder="Your Name" />
-        <input type="text" id="patientSurname" placeholder="Your Surname" />
-        <input type="text" id="patientPhone" placeholder="Your Phone Number" />
-        <button class="register-button" onclick="makeAppointment()">
-          Register
-        </button>
-      </div>
-
-      <div id="registeredInfo" class="registered-info">
-        <h3>Registered Appointments:</h3>
-        <div id="inputListContainer" class="input-list"></div>
-      </div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
@@ -192,72 +178,54 @@
           firstname: "Islom",
           lastname: "Karimov",
           specialty: "ALLERGIST",
-          workingHours: "8am - 5pm",
-          workingDays: "Mon - Sat",
         },
         {
           id: 2,
           firstname: "Oygul",
           lastname: "Nazarova",
           specialty: "GASTROENTEROLOGIST",
-          workingHours: "8am - 5pm",
-          workingDays: "Mon - Sat",
         },
         {
           id: 3,
           firstname: "Azizbek",
           lastname: "Jalilov",
           specialty: "RHEUMATOLOGIST",
-          workingHours: "9am - 6pm",
-          workingDays: "Mon - Fri",
         },
         {
           id: 4,
           firstname: "Dilshod",
           lastname: "Tursunov",
           specialty: "ANESTHESIOLOGIST",
-          workingHours: "8am - 4pm",
-          workingDays: "Mon - Fri",
         },
         {
           id: 5,
           firstname: "Shokhrukh",
           lastname: "Rakhimov",
           specialty: "ENDOCRINOLOGIST",
-          workingHours: "10am - 7pm",
-          workingDays: "Mon - Sat",
         },
         {
           id: 6,
           firstname: "Gulnara",
           lastname: "Ismailova",
           specialty: "CARDIOLOGIST",
-          workingHours: "8am - 5pm",
-          workingDays: "Mon - Fri",
         },
         {
           id: 7,
           firstname: "Jamshid",
           lastname: "Ganiev",
           specialty: "OTOLARYNGOLOGIST",
-          workingHours: "9am - 6pm",
-          workingDays: "Mon - Sat",
         },
         {
           id: 8,
           firstname: "Shirin",
           lastname: "Mamedova",
           specialty: "PEDIATRICIAN",
-          workingHours: "8am - 5pm",
-          workingDays: "Mon - Fri",
         },
         {
           id: 9,
           firstname: "Nodira",
           lastname: "G'ulomova",
           specialty: "THERAPIST",
-          workingHours: "9am - 6pm",
-          workingDays: "Mon - Fri",
         },
         {
           id: 10,
@@ -272,16 +240,12 @@
           firstname: "Mukhammad",
           lastname: "Yusupov",
           specialty: "SURGEON",
-          workingHours: "8am - 5pm",
-          workingDays: "Mon - Fri",
         },
         {
           id: 12,
           firstname: "Gulchehra",
           lastname: "Akhmedova",
           specialty: "DENTIST",
-          workingHours: "10am - 7pm",
-          workingDays: "Mon - Sat",
         },
         {
           id: 13,
@@ -296,16 +260,12 @@
           firstname: "Yulduz",
           lastname: "Bakhromova",
           specialty: "GASTROENTEROLOGIST",
-          workingHours: "8am - 6pm",
-          workingDays: "Mon - Sat",
         },
         {
           id: 15,
           firstname: "Akmal",
           lastname: "Ergashev",
           specialty: "RHEUMATOLOGIST",
-          workingHours: "8am - 4pm",
-          workingDays: "Mon - Fri",
         },
       ];
 
@@ -324,80 +284,11 @@
           doctorCard.innerHTML = `
           <h3>${doctor.firstname} ${doctor.lastname}</h3>
           <p>Specialty: ${doctor.specialty}</p>
-          <p>Working Hours: ${doctor.workingHours}</p>
-          <p>Working Days: ${doctor.workingDays}</p>
-          <button class="select-button" onclick="selectDoctor(${doctor.id})">Select</button>
+          <button class="select-button" onclick="">Select</button>
         `;
           doctorsContainer.appendChild(doctorCard);
         });
       }
-
-      function selectDoctor(doctorId) {
-        const selectedDoctor = doctors.find((doctor) => doctor.id === doctorId);
-        const selectedDoctorContainer = document.getElementById(
-          "selectedDoctorContainer"
-        );
-        selectedDoctorContainer.innerHTML = `
-        <h3>${selectedDoctor.firstname} ${selectedDoctor.lastname}</h3>
-        <p>Specialty: ${selectedDoctor.specialty}</p>
-        <p>Working Hours: ${selectedDoctor.workingHours}</p>
-        <p>Working Days: ${selectedDoctor.workingDays}</p>
-      `;
-        document.getElementById("registerFormContainer").style.display =
-          "block";
-      }
-
-      function makeAppointment() {
-        const name = document.getElementById("patientName").value;
-        const surname = document.getElementById("patientSurname").value;
-        const phone = document.getElementById("patientPhone").value;
-
-        if (name && surname && phone) {
-          const appointment = {
-            name,
-            surname,
-            phone,
-          };
-
-          let appointments =
-            JSON.parse(localStorage.getItem("appointments")) || [];
-          appointments.push(appointment);
-          localStorage.setItem("appointments", JSON.stringify(appointments));
-
-          toastr.success("Your appointment has been registered successfully!");
-
-          updateInputList();
-
-          document.getElementById("patientName").value = "";
-          document.getElementById("patientSurname").value = "";
-          document.getElementById("patientPhone").value = "";
-        } else {
-          toastr.error("Please fill in all fields.");
-        }
-      }
-
-      function updateInputList() {
-        const inputListContainer = document.getElementById(
-          "inputListContainer"
-        );
-
-        const appointments =
-          JSON.parse(localStorage.getItem("appointments")) || [];
-        inputListContainer.innerHTML = "";
-        appointments.forEach((appointment) => {
-          const appointmentDiv = document.createElement("div");
-          appointmentDiv.className = "appointment-item";
-          appointmentDiv.innerHTML = `
-          <p>Name: ${appointment.name}</p>
-          <p>Surname: ${appointment.surname}</p>
-          <p>Phone: ${appointment.phone}</p>
-        `;
-          inputListContainer.appendChild(appointmentDiv);
-        });
-      }
-
-      // Load appointments on page load
-      document.addEventListener("DOMContentLoaded", updateInputList);
     </script>
   </body>
 </html>
